@@ -1,0 +1,80 @@
+def skipRemainingStages = false
+pipeline {
+    agent any
+    parameters {
+string(name: 'shubham', defaultValue: 'shubham.deshpande@neebal.com', description: 'A user that triggers the pipeline')
+               }
+    environment{
+        Path = "/opt/apache-maven-3.6.0/bin:$Path"
+    }
+    options {
+        skipStagesAfterUnstable()
+    }
+                
+        stages {
+        
+        stage('git') {
+            steps {
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                git credentialsId: 'e63a52ef-6c1b-400d-bfaf-3b23ddda2ad7', url: 'http://git.neebal.com/fresher-training/movie-review/movie-review-apis.git'
+            }
+            }
+        }
+        stage('build') {
+            steps{
+               sh 'mvn clean install'
+           
+            }
+        }
+     stage('My Conditional Stage') {
+    when {
+       expression {
+                    skipRemainingStages=false
+                }
+    }
+       steps {
+                script {
+                    println "This text wont show up...."
+                }
+            }
+        }
+
+             stage('build2') {
+            steps{
+                  git credentialsId: 'e63a52ef-6c1b-400d-bfaf-3b23ddda2ad7', url: 'http://git.neebal.com/fresher-training/movie-review/movie-review-apis.git'
+                withMaven(maven:'maven-latest'){
+               sh 'mvn compile test install'
+                writeFile file: 'groovy1.txt', text: 'Working with files the Groovy way is easy.'
+                sh 'ls -l groovy1.txt'
+                sh 'cat groovy1.txt'
+                }
+           
+            }
+        }
+        stage('Notify') {
+            steps {
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+               emailext attachLog: true, attachmentsPattern: 'Attach', body: 'Testing', subject: 'Notify', to: 'shubham.deshpande@neebal.com'
+               emailext attachmentsPattern: 'groovy1.txt', body: 'Testing', subject: 'Notify', to: shubham
+            }
+            }
+        }
+        } 
+        post {
+              always {
+                      echo ('Run the steps in the post section regardless of the completion status of the Pipeline’s or stage’s run')
+                      }
+                      unsuccessful {
+                                    echo ('Only run the steps in post if the current Pipeline’s or stage’s run has not a "success" status')
+                                    }
+                                   changed {
+                                            echo ('the current Pipeline’s or stage’s run has a different completion status from its previous run')        
+                                                    }
+            }
+           
+
+
+        }
+    
+     
+        
