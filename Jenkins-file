@@ -54,7 +54,7 @@ string(name: 'shubham', defaultValue: 'shubham.deshpande@neebal.com', descriptio
         stage('Notify') {
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-               emailext attachLog: true, attachmentsPattern: 'Attach', body: 'Testing', subject: 'Notify', to: 'shubham.deshpande@neebal.com'
+               emailext attachLog: true, attachmentsPattern: 'Attach', body: 'Testing', subject: 'Notify ${BUILD_TIMESTAMP}', to: 'shubham.deshpande@neebal.com'
                emailext attachmentsPattern: 'groovy1.txt', body: 'Testing', subject: 'Notify', to: shubham
             }
             }
