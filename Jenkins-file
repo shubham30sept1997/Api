@@ -22,7 +22,11 @@ string(name: 'shubham', defaultValue: 'shubham.deshpande@neebal.com', descriptio
         }
         stage('build') {
             steps{
-               sh 'mvn clean install'
+               script{
+                 def today = new Date()
+                 def res = today.format("MM/dd/yyyy")
+                 echo res
+               sh 'mvn clean install'+res
            
             }
         }
