@@ -27,7 +27,7 @@ string(name: 'shubham', defaultValue: 'shubham.deshpande@neebal.com', descriptio
                  def res = today.format("MM/dd/yyyy")
                  echo res
                sh 'mvn clean install'+res
-           
+              }
             }
         }
      stage('My Conditional Stage') {
