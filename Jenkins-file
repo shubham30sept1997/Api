@@ -22,10 +22,10 @@ string(name: 'shubham', defaultValue: 'shubham.deshpande@neebal.com', descriptio
         }
         stage('build') {
             steps{
-               script{
+               
                
                sh 'mvn clean install' 
-              }
+             
             }
         }
      stage('My Conditional Stage') {
@@ -43,6 +43,7 @@ string(name: 'shubham', defaultValue: 'shubham.deshpande@neebal.com', descriptio
 
              stage('build2') {
             steps{
+            script{
                    def today = new Date()
                  def res = today.format("MM/dd/yyyy")
                  echo res
@@ -53,7 +54,7 @@ string(name: 'shubham', defaultValue: 'shubham.deshpande@neebal.com', descriptio
                 sh 'ls -l groovy1.txt'+ res
                 sh 'cat groovy1.txt'+ res
                 }
-           
+           }
             }
         }
         stage('Notify') {
