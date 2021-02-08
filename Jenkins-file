@@ -23,10 +23,8 @@ string(name: 'shubham', defaultValue: 'shubham.deshpande@neebal.com', descriptio
         stage('build') {
             steps{
                script{
-                 def today = new Date()
-                 def res = today.format("MM/dd/yyyy")
-                 echo res
-               sh 'mvn clean install' + res
+               
+               sh 'mvn clean install' 
               }
             }
         }
@@ -45,12 +43,15 @@ string(name: 'shubham', defaultValue: 'shubham.deshpande@neebal.com', descriptio
 
              stage('build2') {
             steps{
+                   def today = new Date()
+                 def res = today.format("MM/dd/yyyy")
+                 echo res
                   git credentialsId: 'e63a52ef-6c1b-400d-bfaf-3b23ddda2ad7', url: 'http://git.neebal.com/fresher-training/movie-review/movie-review-apis.git'
                 withMaven(maven:'maven-latest'){
                sh 'mvn compile test install'
                 writeFile file: 'groovy1.txt', text: 'Working with files the Groovy way is easy.'
-                sh 'ls -l groovy1.txt'
-                sh 'cat groovy1.txt'
+                sh 'ls -l groovy1.txt'+ res
+                sh 'cat groovy1.txt'+ res
                 }
            
             }
