@@ -51,7 +51,7 @@ string(name: 'shubham', defaultValue: 'shubham.deshpande@neebal.com', descriptio
                 withMaven(maven:'maven-latest'){
                sh 'mvn compile test install'
                 writeFile file: 'groovy1.txt', text: 'Working with files the Groovy way is easy.'
-                sh 'ls -l groovy1.txt && mv groovy1.txt groovy1.txt+res'
+                sh 'ls -l groovy1.txt && mv groovy1.txt groovy1.txt'+res
                 sh 'cat groovy1.txt'
                 }
            }
